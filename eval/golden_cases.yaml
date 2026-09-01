@@ -1,0 +1,42 @@
+cases:
+  - id: rollback
+    question: How do I roll back a bad deploy?
+    must_cite_any:
+      - deploy_runbook.md
+      - faq.md
+    must_include_any:
+      - rollout undo
+      - rollback
+  - id: incident
+    question: What should I do in the first 15 minutes of an elevated error rate incident?
+    must_cite_any:
+      - incident_response.md
+    must_include_any:
+      - Grafana
+      - readiness
+      - roll
+  - id: cost
+    question: Does AgentOps need AWS or paid LLM APIs?
+    must_cite_any:
+      - faq.md
+      - rag_and_agents.md
+    must_include_any:
+      - "No"
+      - zero
+      - offline
+  - id: kind
+    question: How do I create the kind cluster for AgentOps?
+    must_cite_any:
+      - kubernetes_ops.md
+    must_include_any:
+      - kind create
+  - id: status
+    question: What is the health status of agentops-api replicas?
+    must_cite_any:
+      - networking_basics.md
+      - kubernetes_ops.md
+      - incident_response.md
+      - faq.md
+      - deploy_runbook.md
+      - rag_and_agents.md
+    expect_tool: get_service_status
