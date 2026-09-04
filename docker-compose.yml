@@ -1,0 +1,69 @@
+# Local "cloud" topology — zero AWS/GCP spend.
+# Networks stand in for VPC; unpublished services mimic private subnets.
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    image: agentops-api:local
+    container_name: agentops-api
+    environment:
+      AGENTOPS_ENV: dev
+      AGENTOPS_KB_PATH: /app/data/sample_kb
+      AGENTOPS_RATE_LIMIT_PER_MIN: "60"
+      AGENTOPS_LLM_BACKEND: local_stub
+    ports:
+      - "8080:8080"
+    networks:
+      - agentops-net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    depends_on:
+      - prometheus
+
+  ingest:
+    image: python:3.12-slim
+    container_name: agentops-ingest
+    working_dir: /work
+    volumes:
+      - ./:/work
+    command: ["python", "services/ingest/ingest.py"]
+    networks:
+      - agentops-net
+    profiles: ["batch"]
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: agentops-prometheus
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    # no host port by default — private-ish service; uncomment to browse UI
+    # ports:
+    #   - "9090:9090"
+    networks:
+      - agentops-net
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: agentops-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3000:3000"
+    networks:
+      - agentops-net
+    depends_on:
+      - prometheus
+    profiles: ["ui"]
+
+networks:
+  agentops-net:
+    name: agentops-net
+    driver: bridge
