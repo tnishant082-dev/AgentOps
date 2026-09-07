@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agentops-api-config
+  namespace: agentops
+data:
+  AGENTOPS_ENV: "dev"
+  AGENTOPS_LLM_BACKEND: "local_stub"
+  AGENTOPS_RATE_LIMIT_PER_MIN: "60"
+  AGENTOPS_TOOLS_ENABLED: "search_kb,get_service_status"
+  AGENTOPS_KB_PATH: "/app/data/sample_kb"
