@@ -14,6 +14,14 @@ I wanted one portfolio repo that covers the Cloud AI Engineer staircase end-to-e
 
 ---
 
+## Localhost walkthrough
+
+Silent screen capture of the API running on `http://127.0.0.1:8080` (Swagger `/docs`: healthz, readyz, and `/v1/ask`):
+
+[`artifacts/agentops-localhost-demo.mp4`](./artifacts/agentops-localhost-demo.mp4)
+
+---
+
 ## Quick start (no Docker required)
 
 ```bash
