@@ -20,6 +20,20 @@ Silent screen capture of the API running on `http://127.0.0.1:8080` (Swagger `/d
 
 [`artifacts/agentops-localhost-demo.mp4`](./artifacts/agentops-localhost-demo.mp4)
 
+### Run screenshots (input → process → output)
+
+**1. Input** — `POST /v1/ask` request body in Swagger (not executed yet):
+
+![Ask input](./screenshots/01-ask-input.png)
+
+**2. Process** — local probes before the ask (`/healthz`, `/readyz`):
+
+![Health and ready](./screenshots/02-process-health-ready.png)
+
+**3. Output** — cited answer for “How do I roll back a bad deploy?”:
+
+![Ask output](./screenshots/03-ask-output.png)
+
 ---
 
 ## Quick start (no Docker required)
